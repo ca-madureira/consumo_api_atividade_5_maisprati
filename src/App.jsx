@@ -1,16 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 import Movies from './pages/Movies'
+import Details from './pages/Details'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <Movies />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Movies />} />
+        <Route path="/details/:id" element={<Details />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

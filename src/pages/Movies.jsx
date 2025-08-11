@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-
+import { useNavigate } from "react-router-dom";
+import '../App.css'
 
 export default function Movies() {
+    const navigate = useNavigate()
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -80,15 +82,13 @@ export default function Movies() {
             <div className="movies-container">
                 {movies.map((movie) => (
                     <article key={movie.id} className="movie-card">
-                        <div className="movie-title">
-                            <h2>{movie.title}</h2>
-                            <h3>{movie.release_date.split('-')[0]}</h3>
-                        </div>
-
                         <img
                             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                             alt={movie.title}
                         />
+                        <h2>{movie.title}</h2>
+                        <h3>{movie.release_date.split('-')[0]}</h3>
+                        <button>Detalhes</button>
                     </article>
                 ))}
             </div>
