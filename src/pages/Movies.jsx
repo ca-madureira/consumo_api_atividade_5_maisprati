@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { MdOutlineFavorite, MdFavoriteBorder } from "react-icons/md";
+import { FavoritesContext } from "../contexts/FavoriteContext";
 import { api } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import '../App.css'
@@ -11,6 +13,11 @@ export default function Movies() {
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
+
+
+    const { favorites, toggleFavorite } = useContext(FavoritesContext);
+
+
 
     const searchMovie = async (movie, page = 1) => {
         try {
@@ -49,6 +56,10 @@ export default function Movies() {
         getMovies(page)
     }
 
+    const handleDetails = (id) => {
+        navigate(`/details/${id}`)
+    }
+
     useEffect(() => {
         getMovies();
     }, []);
@@ -80,17 +91,34 @@ export default function Movies() {
                 </form>
             </header>
             <div className="movies-container">
-                {movies.map((movie) => (
-                    <article key={movie.id} className="movie-card">
-                        <img
-                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                            alt={movie.title}
-                        />
-                        <h2>{movie.title}</h2>
-                        <h3>{movie.release_date.split('-')[0]}</h3>
-                        <button>Detalhes</button>
-                    </article>
-                ))}
+                {movies.map((movie) => {
+                    const isFavorite = favorites.some((fav) => fav.id === movie.id);
+
+                    return (
+                        <article key={movie.id} className="movie-card">
+                            <img
+                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                alt={movie.title}
+                            />
+                            <h2>{movie.title}</h2>
+                            <h3>{movie.release_date.split('-')[0]}</h3>
+                            <button onClick={() => toggleFavorite(movie)}>
+                                {isFavorite ? (
+                                    <>
+                                        <MdOutlineFavorite /> Remover
+                                    </>
+                                ) : (
+                                    <>
+                                        <MdFavoriteBorder /> Favoritar
+                                    </>
+                                )}
+                            </button>
+
+                            <button onClick={() => handleDetails(movie.id)}>Detalhes</button>
+                        </article>
+                    );
+                })}
+
             </div>
 
 
