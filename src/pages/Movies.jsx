@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { ClipLoader } from "react-spinners";
 import { MdOutlineFavorite, MdFavoriteBorder } from "react-icons/md";
 import { FavoritesContext } from "../contexts/FavoriteContext";
 import { api } from "../services/api";
@@ -71,7 +72,7 @@ export default function Movies() {
         }
     }, [searchTerm]);
 
-    if (loading) return <div>Carregando...</div>;
+
     if (error) return <div>Erro ao carregar filmes: {error.message}</div>;
 
     return (
@@ -90,36 +91,43 @@ export default function Movies() {
                     <button type="submit">Pesquisar</button>
                 </form>
             </header>
-            <div className="movies-container">
-                {movies.map((movie) => {
-                    const isFavorite = favorites.some((fav) => fav.id === movie.id);
+            {
+                loading ? (
+                    <div className="indicator"><ClipLoader color="#b3df4ec4" size={50} /></div>
+                ) : (
+                    <div className="movies-container">
+                        {movies.map((movie) => {
+                            const isFavorite = favorites.some((fav) => fav.id === movie.id);
 
-                    return (
-                        <article key={movie.id} className="movie-card">
-                            <img
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                alt={movie.title}
-                            />
-                            <h2>{movie.title}</h2>
-                            <h3>{movie.release_date.split('-')[0]}</h3>
-                            <button onClick={() => toggleFavorite(movie)}>
-                                {isFavorite ? (
-                                    <>
-                                        <MdOutlineFavorite /> Remover
-                                    </>
-                                ) : (
-                                    <>
-                                        <MdFavoriteBorder /> Favoritar
-                                    </>
-                                )}
-                            </button>
+                            return (
+                                <article key={movie.id} className="movie-card">
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                        alt={movie.title}
+                                    />
+                                    <h2>{movie.title}</h2>
+                                    <h3>{movie.release_date.split('-')[0]}</h3>
+                                    <button onClick={() => toggleFavorite(movie)}>
+                                        {isFavorite ? (
+                                            <>
+                                                <MdOutlineFavorite /> Remover
+                                            </>
+                                        ) : (
+                                            <>
+                                                <MdFavoriteBorder /> Favoritar
+                                            </>
+                                        )}
+                                    </button>
 
-                            <button onClick={() => handleDetails(movie.id)}>Detalhes</button>
-                        </article>
-                    );
-                })}
+                                    <button onClick={() => handleDetails(movie.id)}>Detalhes</button>
+                                </article>
+                            );
+                        })}
 
-            </div>
+                    </div>
+                )
+            }
+
 
 
             <section className="pagination-container">

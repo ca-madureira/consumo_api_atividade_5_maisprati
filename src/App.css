@@ -222,6 +222,14 @@
   text-align: right;
 }
 
+.indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
 @media screen and (min-width: 768px) {
   .details-container {
     flex-direction: row;
