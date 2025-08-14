@@ -1,46 +1,50 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import { useParams } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import { DetailsCard } from "../components/DetailsCard";
 
 export default function Details() {
     const { id } = useParams();
     const [infoMovie, setInfoMovie] = useState(null);
+    const [director, setDirector] = useState(null);
+    const [cast, setCast] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const getMovie = async () => {
         setLoading(true);
+        setError(null);
         try {
-            const response = await api.get(`/movie/${id}`);
-            setInfoMovie(response.data);
-            setLoading(false);
+            const responseDetails = await api.get(`/movie/${id}`);
+            setInfoMovie(responseDetails.data);
+
+            const responseCredits = await api.get(`/movie/${id}/credits`);
+            const diretor = responseCredits.data.crew.find(member => member.job === "Director");
+            setDirector(diretor);
+            setCast(responseCredits.data.cast);
         } catch (err) {
             setError(err);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        if (id) {
-            getMovie();
-        }
+        if (id) getMovie();
     }, [id]);
 
-    if (loading) return <p>Carregando...</p>;
     if (error) return <p>Erro: {error.message}</p>;
+    if (loading) return <div className="indicator"><ClipLoader color="#b3df4ec4" size={50} /></div>;
     if (!infoMovie) return <p>Filme não encontrado.</p>;
 
     return (
-        <main className="details-container">
-            <img
-                src={`https://image.tmdb.org/t/p/w500${infoMovie.poster_path}`}
-                alt={`Poster de ${infoMovie.title}`}
+        <main>
+            <DetailsCard
+                infoMovie={infoMovie}
+                director={director}
+                cast={cast}
             />
-            <div className="details-info">
-                <h1>{infoMovie.title}</h1>
-                <h2>Sinopse</h2>
-                <p>{infoMovie.overview}</p>
-                <div className="details-rating">Avaliação: {infoMovie.vote_average}</div>
-            </div>
         </main>
     );
 }

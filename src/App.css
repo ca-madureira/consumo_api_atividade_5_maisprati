@@ -9,6 +9,7 @@
 
 
 .movie-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +17,7 @@
   min-height: 21.9rem;
   background-color: #39373a;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1.4rem;
   box-sizing: border-box;
   color: white;
   gap: 0.5rem;
@@ -28,14 +29,12 @@
   transform: scale(1.03);
 }
 
-
 .movie-card img {
   width: 100%;
   height: auto;
   border-radius: 4px;
   object-fit: cover;
 }
-
 
 .movie-card h2 {
   font-size: 1rem;
@@ -46,9 +45,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   height: 2.6em;
-
 }
-
 
 .movie-card h3 {
   color: aqua;
@@ -56,8 +53,18 @@
   font-weight: 400;
 }
 
+.button-icon {
+  position: absolute;
+  right: 0.4rem;
+  top: 0.4rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: #e7e409;
+  font-size: 1rem;
+}
 
-.movie-card button {
+.button-details {
   margin-top: auto;
   width: 100%;
   padding: 0.7rem;
@@ -70,7 +77,7 @@
   transition: background-color 0.3s ease;
 }
 
-.movie-card button:hover {
+.button-details:hover {
   background-color: rgba(81, 153, 21, 1);
 }
 
@@ -82,6 +89,7 @@
   align-items: center;
   background-color: #39373a;
   padding: 1rem;
+  position: relative;
 }
 
 .header-movie form {
@@ -108,6 +116,13 @@
   background-color: #6e6870;
 }
 
+.link-favorites {
+  position: absolute;
+  right: 1rem;
+  color: #e7e409;
+  font-weight: bold;
+  text-decoration: none;
+}
 
 .pagination-container {
   display: flex;
@@ -144,7 +159,6 @@
 .pagination-card button:hover:not(:disabled) {
   background-color: #6e6870;
 }
-
 
 .details-card {
   border: 2px solid #39373a;
@@ -215,11 +229,16 @@
 }
 
 .details-rating {
+  display: flex;
+  gap: .2rem;
   font-weight: 700;
   font-size: 1.1rem;
-  color: #4caf50;
   margin-top: auto;
   text-align: right;
+}
+
+.details-rating span {
+  color: #e7e409;
 }
 
 .indicator {
@@ -262,11 +281,7 @@
     text-align: left;
     margin-top: 1rem;
   }
-}
 
-
-
-@media screen and (min-width: 768px) {
   .movies-container {
     margin: 2rem;
     justify-content: center;
